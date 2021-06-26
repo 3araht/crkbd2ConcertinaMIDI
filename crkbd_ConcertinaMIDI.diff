@@ -1,0 +1,67 @@
+diff --git a/keyboards/crkbd/config.h b/keyboards/crkbd/config.h
+index d7a3474733..5f46dfd102 100644
+--- a/keyboards/crkbd/config.h
++++ b/keyboards/crkbd/config.h
+@@ -73,3 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ #define NO_ACTION_MACRO
+ #define NO_ACTION_FUNCTION
++
++#ifdef MIDI_ENABLE
++#    define MIDI_ADVANCED
++#endif  //  MIDI_ENABLE
+diff --git a/keyboards/crkbd/keymaps/via/config.h b/keyboards/crkbd/keymaps/via/config.h
+index aa2d45e56d..ddb3e79cea 100644
+--- a/keyboards/crkbd/keymaps/via/config.h
++++ b/keyboards/crkbd/keymaps/via/config.h
+@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ 
+ #undef RGBLED_NUM
+-#define RGBLIGHT_ANIMATIONS
++// #define RGBLIGHT_ANIMATIONS
+ #define RGBLED_NUM 27
+ #define RGBLIGHT_LIMIT_VAL 120
+ #define RGBLIGHT_HUE_STEP 10
+diff --git a/keyboards/crkbd/keymaps/via/keymap.c b/keyboards/crkbd/keymaps/via/keymap.c
+index 4735255eae..b677410632 100644
+--- a/keyboards/crkbd/keymaps/via/keymap.c
++++ b/keyboards/crkbd/keymaps/via/keymap.c
+@@ -18,6 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ #include QMK_KEYBOARD_H
+ 
++// Used to set octave to MI_OCT_0
++extern midi_config_t midi_config;
++
++// Initial velocity value (avoid using 127 since it is used as a special number in some sound sources.)
++#define MIDI_INITIAL_VELOCITY 117
++
+ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+   [0] = LAYOUT_split_3x6_3(
+   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+@@ -69,6 +75,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+   )
+ };
+ 
++void keyboard_post_init_user(void) {
++    //  Set otave to MI_OCT_0
++    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
++};
++
+ #ifdef OLED_DRIVER_ENABLE
+ #include <stdio.h>
+ 
+diff --git a/keyboards/crkbd/rules.mk b/keyboards/crkbd/rules.mk
+index 466d9265f8..7cb84ec02e 100644
+--- a/keyboards/crkbd/rules.mk
++++ b/keyboards/crkbd/rules.mk
+@@ -22,7 +22,7 @@ CONSOLE_ENABLE = no         # Console for debug
+ COMMAND_ENABLE = no        # Commands for debug and configuration
+ NKRO_ENABLE = no            # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
+ BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality
+-MIDI_ENABLE = no            # MIDI controls
++MIDI_ENABLE = yes            # MIDI controls
+ AUDIO_ENABLE = no           # Audio output on port C6
+ UNICODE_ENABLE = no         # Unicode
+ BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
