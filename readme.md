@@ -1,5 +1,9 @@
 # コンサーティーナ 自作 MIDIキーボード の実現方法
 ohayuta さんが Corne Cherry を使ってコンサーティーナ のMIDIキーボード を実現されるということで、QMK Firmware のコードを少し変更して、VIA （REMAP）で MIDIの音階キーを割り当てた後、MIDI出力できるようにしました。  
+### 注意点： 2021/9/4 現在、押し引きで音が変わるダイアトニック式コンサーティーナ（＝アングロ・コンサーティーナ、＝蛇腹を開いた時と閉じた時で異なる音が出るタイプ）の再現のためにはレイヤー切り替え作戦をイメージしておりました。しかし、この作戦はうまく行かないようです。レイヤーの切り替えだけでは、押しっぱなしにしている音階キーが押され直さないようです。もともとQMK Firmware はタイピングキーボード用に設計されているので、そういう仕様なのだと思います。 ###
+
+参考：ohayuta さんのブログ  
+https://itmlearner.blogspot.com/2021/07/midi.html
 
 # キーボードキット
 foostan さんの Corne キーボード  
@@ -36,6 +40,11 @@ https://www.instagram.com/3araht/
 # A proposal to convert Corne keyboard into Concertina MIDI keyboard
 ohayuta had an Excellent idea using Corne keyboard emulating a MIDI keyboard of Concertina.
 I helped him a little to preape a VIA firmware which has MIDI features enabled.  
+
+### Warning: As of 2021/9/4, layer transition was the idea to emulate the different notes played when bellows are pressed or pulled (Diatonic Concertina = Anglo style Concertina, which each button plays a different note depending on whether the bellows are pressed or pulled). However, this doesn't work well since QMK Firmware is originally designed for typing keyboards which would not prefer such attitude. ###
+
+Reference：ohayuta's blog
+https://translate.google.com/translate?sl=ja&tl=en&u=https://itmlearner.blogspot.com/2021/07/midi.html
 
 # Keyboard kit
 foostan's Corne keyboard is introduced here.  
